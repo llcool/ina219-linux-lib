@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <unistd.h>
-#include "ina219.h"
 #include <time.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "ina219.h"
 
 #define KEYS_PARSE_STRING "s:d:k:pcvtah"
 #define KEY_ON 1
@@ -14,7 +15,7 @@ typedef uint8_t key_flag;
 
 void ina219_tool_print_help()
 {
-	printf("simple utilit for communication with one or more ina219 devices\n");
+	printf("A simple tool for communication with one or more ina219 devices\n");
 	printf("ina219-tool [-v] [-c] [-p] [-a] [-k {koeff}] [-s {{1, 2, 4, 32, 128}}] {-d {filename}} \
 {device_addr_1 [device_addr_2 ... [device_addr_n]]}\n\n");
 	printf("-v print voltage\n");
@@ -40,8 +41,8 @@ int main(int argc, char *argv[])
 	int ina_219_device_i2c_adapter_nr = 0;
 	char ina_219_device_filename[INA_219_DEVICE_FILENAME_SIZE];
 	double current_device_koeff = 1.0;
-	unsigned sample_size = 128; //размер выборки
-	//snprintf(ina_219_device_filename, INA_219_DEVICE_FILENAME_SIZE, "/dev/i2c-%d", ina_219_device_i2c_adapter_nr);snprintf(ina_219_device_filename, INA_219_DEVICE_FILENAME_SIZE, "/dev/i2c-%d", ina_219_device_i2c_adapter_nr);
+	unsigned sample_size = 128; // sample size
+	// snprintf(ina_219_device_filename, INA_219_DEVICE_FILENAME_SIZE, "/dev/i2c-%d", ina_219_device_i2c_adapter_nr);snprintf(ina_219_device_filename, INA_219_DEVICE_FILENAME_SIZE, "/dev/i2c-%d", ina_219_device_i2c_adapter_nr);
 
 
 	while ((opt = getopt(argc, argv, KEYS_PARSE_STRING)) != -1) {
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
 				sscanf(optarg, "%u", &sample_size);
 				if (!(sample_size == 1 || sample_size == 2 || sample_size == 4 ||
 					  sample_size == 32 || sample_size == 128)) {
-					printf("Bad sample parametr. Only 1, 2, 4, 32, 128\n");
+					printf("Bad sample parameter. Only 1, 2, 4, 32, 128\n");
 					return 0;
 				}
 				break;
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
 				power_flag = KEY_ON;
 				break;
 			case '?':
-				printf("invalid parametr\n");
+				printf("invalid parameter\n");
 				return 0;
 				break;
 		};

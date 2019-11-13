@@ -1,11 +1,14 @@
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdint.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+
+#include "linux/i2c-dev.h"
 
 #include "ina219.h"
 
@@ -36,12 +39,12 @@ ina_219_device* ina_219_device_open(const char * ina_219_device_filename, uint8_
 	return res;
 
 address_device_error:
-	printf("init communication with device error\n");
+	printf("Init communication with device error\n");
 open_i2c_error:
-	printf("open device error\n");
-	printf("device addr: %x\n", i2c_device_addr);
+	printf("Open device error\n");
+	printf("Device addr: %x\n", i2c_device_addr);
 	free(res);
-	
+
 
 	return NULL;
 }
@@ -60,11 +63,11 @@ double ina_219_device_get_current(ina_219_device *dev)
 	int32_t res = ina_219_device_read_reg(dev, INA_219_DEVICE_CURRENT_REG);
 
 	if (res < 0) {
-		printf("read current error\n");
+		printf("Read current error\n");
 		exit(1);
 	}
 
-	//не забываем отбросить старшие разряды
+	// do not forget to drop the high order
 	int16_t res_p = (int16_t)res;
 
 	return (double)res_p / dev->current_LSB;
@@ -76,7 +79,7 @@ double ina_219_device_get_bus_voltage(ina_219_device *dev)
 	int16_t res_p;
 
 	if (!dev->bus_on) {
-		printf("warning: bus mode is off\n");
+		printf("Warning: bus mode is off\n");
 		return 0.0;
 	}
 
@@ -84,11 +87,11 @@ double ina_219_device_get_bus_voltage(ina_219_device *dev)
 		res = ina_219_device_read_reg(dev, INA_219_DEVICE_BUS_VOLTAGE_REG);
 
 		if (res < 0) {
-			printf("read bus voltage error\n");
+			printf("Read bus voltage error\n");
 			exit(1);
 		}
 
-		//не забываем отбросить старшие разряды
+		// do not forget to drop the high order
 		res_p = (int16_t)res;
 	} while (!(res_p & 0b10u));
 
@@ -105,18 +108,18 @@ double ina_219_device_get_bus_voltage(ina_219_device *dev)
 double ina_219_device_get_shunt_voltage(ina_219_device *dev)
 {
 	if (!dev->shunt_on) {
-		printf("warning: shunt mode is off\n");
+		printf("Warning: shunt mode is off\n");
 		return 0.0;
 	}
 
 	int32_t res = ina_219_device_read_reg(dev, INA_219_DEVICE_SHUNT_VOLTAGE_REG);
 
 	if (res < 0) {
-		printf("read shunt voltage error\n");
+		printf("Read shunt voltage error\n");
 		exit(1);
 	}
 
-	//не забываем отбросить старшие разряды
+	// do not forget to drop the high order
 	int16_t res_p = (int16_t)res;
 
 	return (double)res_p / dev->shunt_LSB;
