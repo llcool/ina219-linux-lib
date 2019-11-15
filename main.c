@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
 				break;
 		}
 
-		ina_219_device_config(dev, INA_219_DEVICE_BUS_VOLTAGE_RANGE_32 |
+		ina_219_device_config(dev, INA_219_DEVICE_BUS_VOLTAGE_RANGE_16 |
 							INA_219_DEVICE_GAIN_8 |
 							INA_219_DEVICE_MODE_SHUNT |
 							INA_219_DEVICE_MODE_BUS |
@@ -150,14 +150,14 @@ int main(int argc, char *argv[])
 		double voltage = ina_219_device_get_bus_voltage(dev);
 		double current = ina_219_device_get_current(dev);
 		if (voltage_flag == KEY_ON) {
-			printf("%.03lf V ", voltage);
+			printf("%.03lfV ", voltage);
 		}
 		if (current_flag == KEY_ON) {
-			printf("%.03lf A ", current_device_koeff * current);
+			printf("%.03lfA ", current_device_koeff * current);
 		}
 
 		if (power_flag == KEY_ON) {
-			printf("%.03lf W ", current_device_koeff * current * voltage);
+			printf("%.03lfW ", current_device_koeff * current * voltage);
 		}
 		ina_219_device_close(dev);
 		argc_p++;

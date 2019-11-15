@@ -55,8 +55,8 @@ int ina_219_device_close(ina_219_device *dev)
 	free(dev);
 }
 /*
-	shunt_resistor_resistance in Om
-	max_current in A
+	shunt_resistor_resistance in ohms
+	max_current in amps
 */
 double ina_219_device_get_current(ina_219_device *dev)
 {

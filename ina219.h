@@ -15,7 +15,7 @@
 #define INA_219_DEVICE_CURRENT_REG 0x04
 #define INA_219_DEVICE_CALIBRATION_REG 0x05
 
-//config reg values (you can unite this values by means of bit operations)
+//config reg values (you can OR this values by means of bit operations)
 #define INA_219_DEVICE_RESET 0x8000
 #define INA_219_DEVICE_BUS_VOLTAGE_RANGE_32 (0b1 << 13)
 #define INA_219_DEVICE_BUS_VOLTAGE_RANGE_16 (0b0 << 13)
