@@ -1,5 +1,5 @@
 INA219
-Connecting the INA219 to a Beaglebone Black
+Connecting the INA219 to Beaglebone Black
 
 INA219      Beaglebone Black
 Vcc <-----> VDD_3V3 (P9_4)
